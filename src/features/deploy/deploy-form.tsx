@@ -7,7 +7,7 @@ import {
     Flex,
     FormHelperText,
 } from '@chakra-ui/react';
-import './deploy-table.css'; // Import CSS file
+import '../../deploy-table.css'; // Import CSS file
 
 function DeployForm() {
     return (
@@ -52,8 +52,6 @@ function DeployForm() {
                     <FormHelperText>helper</FormHelperText>
                 </FormControl>
             </Flex>
-            <Button className="login-button"
-                    type="submit">Deploy</Button>
         </form>
     )
 

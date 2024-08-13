@@ -1,5 +1,5 @@
 import {Flex, Input, Text} from '@chakra-ui/react'
-import EnvsTable from "../envs-table";
+import EnvsTable from "../features/environment/envs-table";
 
 
 const EnvsPage = () => {

@@ -1,10 +1,12 @@
-import './App.css';
+import '../../App.css';
 import {
     IconButton, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
-import {Project, useGetProjectsQuery} from "./store/endpoints/be.endpoints";
-import {EditIcon, SearchIcon, SettingsIcon} from '@chakra-ui/icons'
+import {Project, useGetProjectsQuery} from "../../store/endpoints/be.endpoints";
+import {SearchIcon} from '@chakra-ui/icons'
 import {useNavigate} from "react-router-dom";
+import SubmitDeployPopup from "../deploy/submit-deploy-popup";
+import EditProjectPopup from "./edit-project-popup";
 
 
 type TableColumn = {
@@ -71,9 +73,9 @@ const ProjectsTable = () => {
                                 {columns.map(column => <Td
                                     key={project.id + column.key}>{project[column.key as keyof Project]}</Td>)}
                                 <Stack direction='row' spacing={2}>
-                                    <IconButton icon={<EditIcon/>}/>
+                                    <EditProjectPopup/>
                                     <IconButton icon={<SearchIcon/>} onClick={navigateToEnvs}/>
-                                    <IconButton icon={<SettingsIcon/>} colorScheme='red' variant='outline'/>
+                                    <SubmitDeployPopup/>
                                 </Stack>
                             </Tr>)}
                         </>

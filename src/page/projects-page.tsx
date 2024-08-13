@@ -1,5 +1,5 @@
 import {Flex, Input, Text} from '@chakra-ui/react'
-import ProjectsTable from "../projects-table";
+import ProjectsTable from "../features/project/projects-table";
 
 
 const ProjectsPage = () => {
