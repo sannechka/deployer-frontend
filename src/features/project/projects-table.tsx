@@ -9,7 +9,6 @@ import SubmitDeployPopup from "../deploy/submit-deploy-popup";
 import EditProjectPopup from "./edit-project-popup";
 import {ReactNode} from "react";
 
-
 type TableColumn = {
     key: string;
     label: string;
@@ -56,7 +55,7 @@ const actionColumn: TableColumn[] = [{
 const ProjectsTable = () => {
     const navigate = useNavigate();
     const {data = [], isLoading} = useGetProjectsQuery()
-    const navigateToEnvs = () => navigate('/envs');
+    const navigateToEnvs = (id:string) => navigate(`${id}/envs`);
 
     const projects = data as Project[];
     return (
@@ -82,7 +81,7 @@ const ProjectsTable = () => {
                                 </Td>)}
                                 <Stack direction='row' spacing={2}>
                                     <EditProjectPopup/>
-                                    <IconButton aria-label={'envs'} icon={<SearchIcon/>} onClick={navigateToEnvs}/>
+                                    <IconButton aria-label={'envs'} icon={<SearchIcon/>} onClick={()=>navigateToEnvs(project.id)}/>
                                     <SubmitDeployPopup/>
                                 </Stack>
                             </Tr>)}

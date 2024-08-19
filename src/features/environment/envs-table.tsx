@@ -1,11 +1,11 @@
 import '../../App.css';
 import {
-    IconButton, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+ Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
-import {Project, useGetEnvsQuery} from "../../store/endpoints/be.endpoints";
-import {EditIcon, SettingsIcon} from '@chakra-ui/icons'
+import {Env} from "../../store/endpoints/be.endpoints";
 import SubmitDeployPopup from "../deploy/submit-deploy-popup";
 import EditEnvPopup from "./edit-env-popup";
+import {FC} from "react";
 
 type TableColumn = {
     key: string;
@@ -15,10 +15,6 @@ const columns: TableColumn[] = [
     {
         key: 'name',
         label: 'Name'
-    },
-    {
-        key: 'projectId',
-        label: 'projectId'
     },
     {
         key: 'k8sUrl',
@@ -43,11 +39,12 @@ const actionColumn: TableColumn[] = [{
     label: ''
 }]
 
-const EnvsTable = () => {
+export type EnvsTableProps ={
+    envs: Env[]
+}
+const EnvsTable: FC<EnvsTableProps> = ({envs}) => {
 
-    const {data = [], isLoading} = useGetEnvsQuery()
 
-    const projects = data as Project[];
     return (
         <TableContainer whiteSpace="pre-line">
             <Table variant='simple' size={'sm'} borderColor={'gray'} border={1}>
@@ -62,9 +59,9 @@ const EnvsTable = () => {
                 <Tbody>
                     {
                         <>
-                            {projects?.map(project => <Tr>
+                            {envs?.map(env => <Tr>
                                 {columns.map(column => <Td
-                                    key={project.id + column.key}>{project[column.key as keyof Project]}</Td>)}
+                                    key={env.id + column.key}>{env[column.key as keyof Env]}</Td>)}
                                 <Stack direction='row' spacing={2}>
                                     <EditEnvPopup/>
                                     <SubmitDeployPopup/>

@@ -10,25 +10,23 @@ import {
 import '../../deploy-table.css';
 import Form from "antd/es/form";
 import {
-    Deployment,
+    Deployment, Project,
     useGetEnvsQuery,
     useGetProjectsQuery,
-    usePostDeploymentMutation
+    usePostDeploymentMutation, usePostProjectMutation
 } from "../../store/endpoints/be.endpoints";
 import {useCallback} from "react"; // Import CSS file
 
-function DeployForm() {
+function ProjectForm() {
 
-    const [form] = Form.useForm<Deployment>();
+    const [form] = Form.useForm<Project>();
 
-    const initialValues: Partial<Deployment> = {};
-    const [postDeployment] = usePostDeploymentMutation();
-    const {data: projects = []} = useGetProjectsQuery();
-    const {data: envs = []} = useGetEnvsQuery();
+    const initialValues: Partial<Project> = {};
+    const [postProject] = usePostProjectMutation();
 
     const handleSubmit = useCallback(
-        async (values: Deployment) => {
-            const result = await postDeployment({...initialValues, ...values});
+        async (values: Project) => {
+            const result = await postProject({...initialValues, ...values});
             if (result) {
                 console.log('Saved')
             }
@@ -40,9 +38,9 @@ function DeployForm() {
         <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
             <Flex direction={"column"} gap={4}>
                 <FormControl mr="5%">
-                    <FormLabel fontWeight={'normal'}>Project:</FormLabel>
+                    <FormLabel fontWeight={'normal'}>Name:</FormLabel>
                     <Form.Item
-                        name="projectId"
+                        name="name"
                         rules={[
                             {
                                 required: true,
@@ -54,37 +52,14 @@ function DeployForm() {
                             },
                         ]}
                     >
-                        <Select>
-                            {projects.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
+                        <Input/>
                     </Form.Item>
                 </FormControl>
 
                 <FormControl>
-                    <FormLabel fontWeight={'normal'}>Environment:</FormLabel>
+                    <FormLabel fontWeight={'normal'}>Description:</FormLabel>
                     <Form.Item
-                        dependencies={['projectId']}
-                        name="envId"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Select>
-                            {envs.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
-                    </Form.Item>
-                </FormControl>
-                <FormControl>
-                    <FormLabel fontWeight={'normal'}>Namespace:</FormLabel>
-                    <Form.Item
-                        name="namespace"
+                        name="description"
                         rules={[
                             {
                                 required: true,
@@ -100,9 +75,27 @@ function DeployForm() {
                     </Form.Item>
                 </FormControl>
                 <FormControl>
-                    <FormLabel fontWeight={'normal'}>Descriptor Version:</FormLabel>
+                    <FormLabel fontWeight={'normal'}>Git Config Repository:</FormLabel>
                     <Form.Item
-                        name="descriptorVersion"
+                        name="gitConfigRepository"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'ddd'
+                            },
+                            {
+                                whitespace: true,
+                                message: 'ddd'
+                            },
+                        ]}
+                    >
+                        <Input/>
+                    </Form.Item>
+                </FormControl>
+                <FormControl>
+                    <FormLabel fontWeight={'normal'}>Artifactory Deployment Descriptor Folder:</FormLabel>
+                    <Form.Item
+                        name="artifactoryDeploymentDescriptorFolder"
                         rules={[
                             {
                                 required: true,
@@ -119,16 +112,13 @@ function DeployForm() {
                 </FormControl>
                 <FormControl mt="2%">
                     <FormLabel fontWeight={'normal'}>
-                        Additional variables:
+                        Services:
                     </FormLabel>
-                    <Textarea
-                        value={'value'}
-                        onChange={() => {
-                        }}
-                        placeholder='Here is a sample placeholder'
-                        size='sm'
-                    />
-                    <FormHelperText>helper</FormHelperText>
+                    <Form.Item
+                        name="artifactoryDeploymentDescriptorFolder"
+                    >
+                        <Input/>
+                    </Form.Item>
                 </FormControl>
             </Flex>
             <Form.Item wrapperCol={{offset: 8, span: 16}}>
@@ -141,4 +131,4 @@ function DeployForm() {
 
 }
 
-export default DeployForm;
+export default ProjectForm;

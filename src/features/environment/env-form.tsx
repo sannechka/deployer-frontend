@@ -1,34 +1,31 @@
 import {
     Button,
     FormLabel,
-    Select,
-    Textarea,
     FormControl,
     Flex,
-    FormHelperText, Input,
+    Input,
+    Tabs,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels
 } from '@chakra-ui/react';
 import '../../deploy-table.css';
 import Form from "antd/es/form";
-import {
-    Deployment,
-    useGetEnvsQuery,
-    useGetProjectsQuery,
-    usePostDeploymentMutation
-} from "../../store/endpoints/be.endpoints";
-import {useCallback} from "react"; // Import CSS file
 
-function DeployForm() {
+import {useCallback} from "react";
+import {Env, usePostEnvMutation} from "../../store/endpoints/be.endpoints";
 
-    const [form] = Form.useForm<Deployment>();
+function EnvForm() {
 
-    const initialValues: Partial<Deployment> = {};
-    const [postDeployment] = usePostDeploymentMutation();
-    const {data: projects = []} = useGetProjectsQuery();
-    const {data: envs = []} = useGetEnvsQuery();
+    const [form] = Form.useForm<Env>();
+
+    const initialValues: Partial<Env> = {};
+    const [postEnv] = usePostEnvMutation();
 
     const handleSubmit = useCallback(
-        async (values: Deployment) => {
-            const result = await postDeployment({...initialValues, ...values});
+        async (values: Env) => {
+            const result = await postEnv({...initialValues, ...values});
             if (result) {
                 console.log('Saved')
             }
@@ -38,8 +35,35 @@ function DeployForm() {
 
     return (
         <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
+            <Tabs variant='enclosed'>
+                <TabList>
+                    <Tab>Env Settings</Tab>
+                    <Tab>Env Variables</Tab>
+                    <Tab>Services Variables</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
             <Flex direction={"column"} gap={4}>
                 <FormControl mr="5%">
+                    <FormLabel fontWeight={'normal'}>Name:</FormLabel>
+                    <Form.Item
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'ddd'
+                            },
+                            {
+                                whitespace: true,
+                                message: 'ddd'
+                            },
+                        ]}
+                    >
+                        <Input/>
+                    </Form.Item>
+                </FormControl>
+
+                <FormControl>
                     <FormLabel fontWeight={'normal'}>Project:</FormLabel>
                     <Form.Item
                         name="projectId"
@@ -54,37 +78,13 @@ function DeployForm() {
                             },
                         ]}
                     >
-                        <Select>
-                            {projects.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
-                    </Form.Item>
-                </FormControl>
-
-                <FormControl>
-                    <FormLabel fontWeight={'normal'}>Environment:</FormLabel>
-                    <Form.Item
-                        dependencies={['projectId']}
-                        name="envId"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Select>
-                            {envs.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
+                        <Input/>
                     </Form.Item>
                 </FormControl>
                 <FormControl>
-                    <FormLabel fontWeight={'normal'}>Namespace:</FormLabel>
+                    <FormLabel fontWeight={'normal'}>k8s Url:</FormLabel>
                     <Form.Item
-                        name="namespace"
+                        name="k8sUrl"
                         rules={[
                             {
                                 required: true,
@@ -100,9 +100,9 @@ function DeployForm() {
                     </Form.Item>
                 </FormControl>
                 <FormControl>
-                    <FormLabel fontWeight={'normal'}>Descriptor Version:</FormLabel>
+                    <FormLabel fontWeight={'normal'}>Category:</FormLabel>
                     <Form.Item
-                        name="descriptorVersion"
+                        name="category"
                         rules={[
                             {
                                 required: true,
@@ -116,21 +116,14 @@ function DeployForm() {
                     >
                         <Input/>
                     </Form.Item>
-                </FormControl>
-                <FormControl mt="2%">
-                    <FormLabel fontWeight={'normal'}>
-                        Additional variables:
-                    </FormLabel>
-                    <Textarea
-                        value={'value'}
-                        onChange={() => {
-                        }}
-                        placeholder='Here is a sample placeholder'
-                        size='sm'
-                    />
-                    <FormHelperText>helper</FormHelperText>
                 </FormControl>
             </Flex>
+                    </TabPanel>
+                    <TabPanel>
+                        <p>two!</p>
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
             <Form.Item wrapperCol={{offset: 8, span: 16}}>
                 <Button type="submit" htmlType="submit">
                     Submit
@@ -141,4 +134,4 @@ function DeployForm() {
 
 }
 
-export default DeployForm;
+export default EnvForm;

@@ -46,7 +46,7 @@ function App() {
                                     <Routes>
                                         <Route path="/">
                                             <Route index element={<ProjectsPage/>}/>
-                                            <Route path="envs" element={<EnvsPage/>}/>
+                                            <Route path=":projectId/envs" element={<EnvsPage/>}/>
                                         </Route>
                                     </Routes>
                                 </BrowserRouter>

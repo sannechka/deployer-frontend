@@ -63,21 +63,38 @@ export const beEndpoints = baseApi.injectEndpoints({
             }),
             providesTags: ['Deployments'],
         }),
-        getEnvs: b.query<Env[], string>({
-            query: id => ({
+        getEnvs: b.query<Env[], void>({
+            query: () => ({
                 url: `${BE_BASE_URL}/env`,
             }),
             providesTags: ['Envs'],
         }),
-
+        getEnvsByProject: b.query<Env[], string>({
+            query: id => ({
+                url: `${BE_BASE_URL}/env/project/${id}`,
+            }),
+        }),
+        postEnv: b.mutation<void, Env>({
+            query: env => ({
+                method: 'POST',
+                url: `${BE_BASE_URL}/env`,
+                body: env,
+            }),
+        }),
 
         postDeployment: b.mutation<void, Deployment>({
-            query: endpoint => ({
+            query: deployment => ({
                 method: 'POST',
-                url: `${BE_BASE_URL}/v1/endpoint/${endpoint.id}`,
-                body: endpoint,
+                url: `${BE_BASE_URL}/deploy`,
+                body: deployment,
             }),
-            invalidatesTags: (r, err, p) => (!err ? ['Deployments', {type: 'Deployment', id: p.id}] : []),
+        }),
+        postProject: b.mutation<void, Project>({
+            query: project => ({
+                method: 'POST',
+                url: `${BE_BASE_URL}/projects`,
+                body: project,
+            }),
         }),
         getProjects: b.query<Project[], void>({
             query: () => ({
@@ -93,7 +110,10 @@ export const beEndpoints = baseApi.injectEndpoints({
 export const {
     useGetDeploymentsQuery,
     useGetProjectsQuery,
+    useGetEnvsByProjectQuery,
     usePostDeploymentMutation,
+    usePostProjectMutation,
+    usePostEnvMutation,
     useGetEnvsQuery
 } = beEndpoints;
 

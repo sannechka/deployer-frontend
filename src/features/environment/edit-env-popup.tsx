@@ -6,6 +6,7 @@ import {
 } from '@chakra-ui/react'
 import {useRef} from "react";
 import {EditIcon} from "@chakra-ui/icons";
+import EnvForm from "./env-form";
 
 
 const EditEnvPopup = () => {
@@ -28,6 +29,7 @@ const EditEnvPopup = () => {
                     <ModalHeader>Edit environment</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody pb={6}>
+                        <EnvForm/>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3}>
