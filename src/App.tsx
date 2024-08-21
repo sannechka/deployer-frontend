@@ -18,30 +18,37 @@ function App() {
                 <Suspense fallback={<div></div>}>
                     <PersistGate persistor={Persistor}>
                         <ChakraProvider>
-                            <Box>
-                                <Flex
-                                    bg={useColorModeValue('white', 'gray.800')}
-                                    color={useColorModeValue('gray.600', 'white')}
-                                    minH={'60px'}
-                                    py={{base: 2}}
-                                    px={{base: 4}}
-                                    borderBottom={1}
-                                    borderStyle={'solid'}
-                                    borderColor={useColorModeValue('gray.200', 'gray.900')}
-                                    align={'center'}>
-                                    <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
-                                        <Text
-                                            fontFamily={'heading'}
-                                            color={useColorModeValue('gray.800', 'white')}>
-                                            Logo
-                                        </Text>
+                            <div style={{
+                                display: 'grid',
+                                height: '100%',
+                                width: '100%',
+                                gridTemplateRows: 'auto 1fr',
+                                padding: 10
+                            }}>
 
+                                <Box>
+                                    <Flex
+                                        bg={useColorModeValue('white', 'gray.800')}
+                                        color={useColorModeValue('gray.600', 'white')}
+                                        minH={'60px'}
+                                        py={{base: 2}}
+                                        px={{base: 4}}
+                                        borderBottom={1}
+                                        borderStyle={'solid'}
+                                        borderColor={useColorModeValue('gray.200', 'gray.900')}
+                                        align={'center'}>
+                                        <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
+                                            <Text
+                                                fontFamily={'heading'}
+                                                color={useColorModeValue('gray.800', 'white')}>
+                                                Logo
+                                            </Text>
+
+                                        </Flex>
                                     </Flex>
-                                </Flex>
-                            </Box>
-                            <Flex>
-                                <DeploymentsList onClose={() => {
-                                }}/>
+                                </Box>
+                                <Flex overflow={'hidden'}>
+                                <DeploymentsList />
                                 <BrowserRouter>
                                     <Routes>
                                         <Route path="/">
@@ -50,7 +57,8 @@ function App() {
                                         </Route>
                                     </Routes>
                                 </BrowserRouter>
-                            </Flex>
+                                </Flex>
+                            </div>
                         </ChakraProvider>
                     </PersistGate>
                 </Suspense>

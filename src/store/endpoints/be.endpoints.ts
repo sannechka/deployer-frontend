@@ -13,11 +13,11 @@ export interface Deployment {
     gitlabPipelineId: null,
     gitlabLink: string,
     envProperties: [
-    {
-        name: string,
-        value: string,
-    }
-],
+        {
+            name: string,
+            value: string,
+        }
+    ],
     serviceProperties: string,
     createdAt: string,
     updatedAt: string
@@ -31,11 +31,11 @@ export interface Env {
     k8sUrl: string,
     category: string,
     envProperties: [
-    {
-        name: string,
-        value: string
-    }
-],
+        {
+            name: string,
+            value: string
+        }
+    ],
     serviceProperties: string,
     createdAt: string,
     updatedAt: string
@@ -56,7 +56,7 @@ export interface Project {
 
 
 export const beEndpoints = baseApi.injectEndpoints({
-    endpoints: (b: any): any => ({
+    endpoints: b => ({
         getDeployments: b.query<Deployment[], void>({
             query: () => ({
                 url: `${BE_BASE_URL}/deploy`,

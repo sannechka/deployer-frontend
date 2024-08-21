@@ -1,13 +1,13 @@
 import '../../App.css';
 import {
     IconButton, Link, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
-} from '@chakra-ui/react'
-import {Project, useGetProjectsQuery} from "../../store/endpoints/be.endpoints";
-import {SearchIcon} from '@chakra-ui/icons'
-import {useNavigate} from "react-router-dom";
-import SubmitDeployPopup from "../deploy/submit-deploy-popup";
-import EditProjectPopup from "./edit-project-popup";
-import {ReactNode} from "react";
+} from '@chakra-ui/react';
+import { Project } from '../../store/endpoints/be.endpoints';
+import { SearchIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
+import SubmitDeployPopup from '../deploy/submit-deploy-popup';
+import EditProjectPopup from './edit-project-popup';
+import { FC, ReactNode } from 'react';
 
 type TableColumn = {
     key: string;
@@ -17,50 +17,60 @@ type TableColumn = {
 const columns: TableColumn[] = [
     {
         key: 'name',
-        label: 'Name'
+        label: 'Name',
     },
     {
         key: 'description',
-        label: 'Description'
+        label: 'Description',
     },
     {
         key: 'gitConfigRepository',
         label: 'Config Repository',
-        render: (value: string) => <Link color="teal.500" href={value} isExternal>{value}</Link>
+        render: (value: string) => <Link color="teal.500" href={value} isExternal>{value}</Link>,
     },
     {
         key: 'artifactoryDeploymentDescriptorFolder',
         label: 'Artifactory Descriptor Folder',
-        render: (value: string) => <Link color="teal.500" href={value} isExternal>{value}</Link>
+        render: (value: string) => <Link color="teal.500" href={value} isExternal>{value}</Link>,
     },
     {
         key: 'services',
-        label: 'Services'
+        label: 'Services',
     },
     {
         key: 'updatedAt',
-        label: 'Updated at'
+        label: 'Updated at',
+        render: (value: string) => {
+            const date = new Date(value);
+            return <>{date.toDateString()}</>;
+        },
     },
     {
         key: 'createdAt',
-        label: 'Created at'
+        label: 'Created at',
+        render: (value: string) => {
+            const date = new Date(value);
+            return <>{date.toDateString()}</>;
+        },
+
     },
-]
+];
 
 const actionColumn: TableColumn[] = [{
     key: 'action',
-    label: ''
-}]
-
-const ProjectsTable = () => {
+    label: '',
+}];
+export type ProjectsTableProps = {
+    projects: Project[];
+}
+const ProjectsTable: FC<ProjectsTableProps> = ({ projects }) => {
     const navigate = useNavigate();
-    const {data = [], isLoading} = useGetProjectsQuery()
-    const navigateToEnvs = (id:string) => navigate(`${id}/envs`);
 
-    const projects = data as Project[];
+    const navigateToEnvs = (id: string) => navigate(`${id}/envs`);
+
     return (
         <TableContainer whiteSpace="pre-line">
-            <Table variant='simple' size={'sm'} borderColor={'gray'} border={1}>
+            <Table variant="simple" size={'sm'} borderColor={'gray'} border={1}>
                 <Thead>
                     <Tr>
                         <>
@@ -79,19 +89,22 @@ const ProjectsTable = () => {
                                         column.render(project[column.key as keyof Project])
                                         : project[column.key as keyof Project]}
                                 </Td>)}
-                                <Stack direction='row' spacing={2}>
-                                    <EditProjectPopup/>
-                                    <IconButton aria-label={'envs'} icon={<SearchIcon/>} onClick={()=>navigateToEnvs(project.id)}/>
-                                    <SubmitDeployPopup/>
-                                </Stack>
+                                <Td>
+                                    <Stack direction="row" spacing={1} height={'100%'}>
+                                        <EditProjectPopup />
+                                        <IconButton aria-label={'envs'} icon={<SearchIcon />}
+                                                    onClick={() => navigateToEnvs(project.id)} />
+                                        <SubmitDeployPopup />
+                                    </Stack>
+                                </Td>
                             </Tr>)}
                         </>
 
                     }
                 </Tbody>
             </Table>
-        </TableContainer>)
-}
+        </TableContainer>);
+};
 
 export default ProjectsTable;
 
