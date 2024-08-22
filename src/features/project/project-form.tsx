@@ -61,7 +61,7 @@ const ProjectForm = forwardRef<ProjectFormRefModel, ProjectFormProps>(({ onClose
     return (
         <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
             <Flex direction={'column'}>
-                <FormLabel fontWeight={'normal'}>Name:</FormLabel>
+                <FormLabel fontWeight={600}>Name:</FormLabel>
                 <Form.Item
                     style={{ marginBottom: 10 }}
                     name="name"
@@ -78,14 +78,14 @@ const ProjectForm = forwardRef<ProjectFormRefModel, ProjectFormProps>(({ onClose
                 >
                     <Input />
                 </Form.Item>
-                <FormLabel fontWeight={'normal'}>Description:</FormLabel>
+                <FormLabel fontWeight={600}>Description:</FormLabel>
                 <Form.Item
                     style={{ marginBottom: 10 }}
                     name="description"
                 >
                     <Input />
                 </Form.Item>
-                <FormLabel fontWeight={'normal'}>Git Config Repository:</FormLabel>
+                <FormLabel fontWeight={600}>Git Config Repository:</FormLabel>
                 <Form.Item
                     name="gitConfigRepository"
                     style={{ marginBottom: 10 }}
@@ -98,7 +98,7 @@ const ProjectForm = forwardRef<ProjectFormRefModel, ProjectFormProps>(({ onClose
                 >
                     <Input />
                 </Form.Item>
-                <FormLabel fontWeight={'normal'}>Artifactory Deployment Descriptor Folder:</FormLabel>
+                <FormLabel fontWeight={600}>Artifactory Deployment Descriptor Folder:</FormLabel>
                 <Form.Item
                     style={{ marginBottom: 10 }}
                     name="artifactoryDeploymentDescriptorFolder"
@@ -115,7 +115,7 @@ const ProjectForm = forwardRef<ProjectFormRefModel, ProjectFormProps>(({ onClose
                 >
                     <Input />
                 </Form.Item>
-                <FormLabel fontWeight={'normal'}>
+                <FormLabel fontWeight={600}>
                     Services:
                 </FormLabel>
                 <Form.List name="services">

@@ -1,43 +1,35 @@
 import {
     Button,
-    Flex, FormControl, IconButton,
-    Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
-    Popover, PopoverBody, PopoverCloseButton,
-    PopoverContent, PopoverFooter,
-    PopoverHeader,
-    PopoverTrigger,
-    Portal,
-    Text, useDisclosure
-} from '@chakra-ui/react'
-import {SettingsIcon} from "@chakra-ui/icons";
-import DeployForm from "./deploy-form";
-import {useRef} from "react";
+    IconButton,
+    Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
+    useDisclosure,
+} from '@chakra-ui/react';
+import { SettingsIcon } from '@chakra-ui/icons';
+import DeployForm, { DeployFormProps, DeployFormRefModel } from './deploy-form';
+import { FC, useRef } from 'react';
 
 
-const SubmitDeployPopup = () => {
-    const {isOpen, onOpen, onClose} = useDisclosure()
+const SubmitDeployPopup: FC<DeployFormProps> = ({ envId, projectId }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const initialRef = useRef(null)
-    const finalRef = useRef(null)
+    const formRef = useRef<DeployFormRefModel>(null);
 
     return (
         <>
-            <IconButton onClick={onOpen} icon={<SettingsIcon/>} colorScheme='gray' aria-label='deploy'/>
+            <IconButton onClick={onOpen} icon={<SettingsIcon />} colorScheme="gray" aria-label="deploy" />
             <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
                 isOpen={isOpen}
                 onClose={onClose}
             >
-                <ModalOverlay/>
+                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Deploy</ModalHeader>
-                    <ModalCloseButton/>
+                    <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <DeployForm/>
+                        <DeployForm ref={formRef} envId={envId} projectId={projectId} />
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
+                        <Button colorScheme="blue" mr={3} onClick={() => formRef?.current?.submit()}>
                             Deploy
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
@@ -45,9 +37,9 @@ const SubmitDeployPopup = () => {
                 </ModalContent>
             </Modal>
         </>
-    )
+    );
 
-}
+};
 
 export default SubmitDeployPopup;
 

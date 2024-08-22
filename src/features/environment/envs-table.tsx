@@ -3,7 +3,7 @@ import {
     Link,
     Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react';
-import { Env, Project } from '../../store/endpoints/be.endpoints';
+import { Env } from '../../store/endpoints/be.endpoints';
 import SubmitDeployPopup from '../deploy/submit-deploy-popup';
 import EditEnvPopup from './edit-env-popup';
 import { FC, ReactNode } from 'react';
@@ -11,7 +11,7 @@ import { FC, ReactNode } from 'react';
 type TableColumn = {
     key: string;
     label: string;
-    render?: (value: string) => ReactNode
+    render?: (value: any) => ReactNode
 
 }
 const columns: TableColumn[] = [
@@ -73,12 +73,14 @@ const EnvsTable: FC<EnvsTableProps> = ({ envs }) => {
                         <>
                             {envs?.map(env => <Tr>
                                 {columns.map(column => <Td
-                                    key={env.id + column.key}>  {column.render ?
-                                    column.render(env[column.key as keyof Env])
-                                    : env[column.key as keyof Env]}</Td>)}
+                                    key={env.id + column.key}>
+                                    {column.render ?
+                                        column.render(env[column.key as keyof Env])
+                                        : env[column.key as keyof Env].toString()}
+                                </Td>)}
                                 <Td>
                                     <Stack direction="row" spacing={1}>
-                                        <EditEnvPopup />
+                                        <EditEnvPopup envId={env.id} />
                                         <SubmitDeployPopup />
                                     </Stack>
                                 </Td>

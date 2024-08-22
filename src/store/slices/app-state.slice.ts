@@ -1,15 +1,10 @@
-import { RootState } from '@app/store/types';
-import { createDraftSafeSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../types';
 
 
-export type AppStateModel = {
-    deployments: string[];
+export type AppStateModel = {};
 
-};
-
-export const appDataInitialState: AppStateModel = {
-    deployments: []
-};
+export const appDataInitialState: AppStateModel = {};
 
 const slice = createSlice({
     name: 'appState',
@@ -25,9 +20,5 @@ export const appDataActions = {
 // Selectors
 const selectAppDataState = (state: RootState) => state.appState;
 
-export const selectDeployments = () =>
-    createDraftSafeSelector(selectAppDataState, state => {
-        return state.selectDeployments || [];
-    });
 
 export const appStateReducer = slice.reducer;

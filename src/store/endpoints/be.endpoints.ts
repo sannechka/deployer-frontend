@@ -1,4 +1,4 @@
-import {baseApi, BE_BASE_URL} from "../base-query";
+import { baseApi, BE_BASE_URL } from '../base-query';
 
 
 export interface Deployment {
@@ -36,7 +36,11 @@ export interface Env {
             value: string
         }
     ],
-    serviceProperties: string,
+    serviceProperties: Record<string,
+        {
+            name: string,
+            value: string
+        }[]>,
     createdAt: string,
     updatedAt: string
 }
@@ -114,7 +118,7 @@ export const {
     usePostDeploymentMutation,
     usePostProjectMutation,
     usePostEnvMutation,
-    useGetEnvsQuery
+    useGetEnvsQuery,
 } = beEndpoints;
 
 

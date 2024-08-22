@@ -1,144 +1,130 @@
 import {
-    Button,
     FormLabel,
     Select,
-    Textarea,
-    FormControl,
-    Flex,
-    FormHelperText, Input,
+    Input, useToast,
 } from '@chakra-ui/react';
 import '../../deploy-table.css';
-import Form from "antd/es/form";
+import Form from 'antd/es/form';
 import {
     Deployment,
     useGetEnvsQuery,
     useGetProjectsQuery,
-    usePostDeploymentMutation
-} from "../../store/endpoints/be.endpoints";
-import {useCallback} from "react"; // Import CSS file
+    usePostDeploymentMutation,
+} from '../../store/endpoints/be.endpoints';
+import { forwardRef, useCallback, useImperativeHandle } from 'react';
 
-function DeployForm() {
+export type DeployFormProps = {
+    envId?: string;
+    projectId?: string;
+    onClose?: () => void;
+}
 
+export type DeployFormRefModel = {
+    submit: () => void;
+};
+const DeployForm = forwardRef<DeployFormRefModel, DeployFormProps>(({ onClose, envId, projectId }, ref) => {
     const [form] = Form.useForm<Deployment>();
-
-    const initialValues: Partial<Deployment> = {};
     const [postDeployment] = usePostDeploymentMutation();
-    const {data: projects = []} = useGetProjectsQuery();
-    const {data: envs = []} = useGetEnvsQuery();
+    const { data: projects = [] } = useGetProjectsQuery();
+    const { data: envs = [] } = useGetEnvsQuery();
+    const toast = useToast();
+    useImperativeHandle(ref, () => ({ submit: form.submit }));
+
+    const initialValues: Partial<Deployment> = { projectId: projectId, envId: envId };
 
     const handleSubmit = useCallback(
         async (values: Deployment) => {
-            const result = await postDeployment({...initialValues, ...values});
-            if (result) {
-                console.log('Saved')
+            const result = await postDeployment({ ...initialValues, ...values });
+            if ('error' in result) {
+                toast({
+                    title: 'Failed to Deploy',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                return;
             }
+            toast({
+                title: 'Deployed',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+            onClose?.();
         },
-        []
+        [],
     );
 
     return (
         <Form form={form} onFinish={handleSubmit} initialValues={initialValues}>
-            <Flex direction={"column"} gap={4}>
-                <FormControl mr="5%">
-                    <FormLabel fontWeight={'normal'}>Project:</FormLabel>
-                    <Form.Item
-                        name="projectId"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Select>
-                            {projects.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
-                    </Form.Item>
-                </FormControl>
 
-                <FormControl>
-                    <FormLabel fontWeight={'normal'}>Environment:</FormLabel>
-                    <Form.Item
-                        dependencies={['projectId']}
-                        name="envId"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Select>
-                            {envs.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
-                        </Select>
-                    </Form.Item>
-                </FormControl>
-                <FormControl>
-                    <FormLabel fontWeight={'normal'}>Namespace:</FormLabel>
-                    <Form.Item
-                        name="namespace"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                </FormControl>
-                <FormControl>
-                    <FormLabel fontWeight={'normal'}>Descriptor Version:</FormLabel>
-                    <Form.Item
-                        name="descriptorVersion"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'ddd'
-                            },
-                            {
-                                whitespace: true,
-                                message: 'ddd'
-                            },
-                        ]}
-                    >
-                        <Input/>
-                    </Form.Item>
-                </FormControl>
-                <FormControl mt="2%">
-                    <FormLabel fontWeight={'normal'}>
-                        Additional variables:
-                    </FormLabel>
-                    <Textarea
-                        value={'value'}
-                        onChange={() => {
-                        }}
-                        placeholder='Here is a sample placeholder'
-                        size='sm'
-                    />
-                    <FormHelperText>helper</FormHelperText>
-                </FormControl>
-            </Flex>
-            <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                <Button type="submit" htmlType="submit">
-                    Submit
-                </Button>
+            <FormLabel fontWeight={600}>Project:</FormLabel>
+            <Form.Item
+                style={{ marginBottom: 10 }}
+                name="projectId"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Project can not be empty',
+                    },
+                ]}
+            >
+                <Select disabled={!!projectId}>
+                    {projects.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
+                </Select>
+            </Form.Item>
+            <FormLabel fontWeight={600}>Environment:</FormLabel>
+            <Form.Item
+                style={{ marginBottom: 10 }}
+                name="envId"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Env can not be empty',
+                    },
+                ]}
+            >
+                <Select disabled={!!envId}>
+                    {envs.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
+                </Select>
+            </Form.Item>
+            <FormLabel fontWeight={600}>Namespace:</FormLabel>
+            <Form.Item
+                style={{ marginBottom: 10 }}
+                name="namespace"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Namespace can not be empty',
+                    },
+                    {
+                        whitespace: true,
+                        message: 'Namecpace can not be empty',
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+            <FormLabel fontWeight={600}>Descriptor Version:</FormLabel>
+            <Form.Item
+                style={{ marginBottom: 10 }}
+                name="descriptorVersion"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Version can not be empty',
+                    },
+                    {
+                        whitespace: true,
+                        message: 'Version can not be empty',
+                    },
+                ]}
+            >
+                <Input />
             </Form.Item>
         </Form>
-    )
+    );
 
-}
+});
 
 export default DeployForm;
