@@ -12,7 +12,7 @@ import { FC, ReactNode } from 'react';
 type TableColumn = {
     key: string;
     label: string;
-    render?: (value: string) => ReactNode
+    render?: (value: any) => ReactNode
 }
 const columns: TableColumn[] = [
     {
@@ -57,7 +57,7 @@ const columns: TableColumn[] = [
 ];
 
 const actionColumn: TableColumn[] = [{
-    key: 'action',
+    key: 'action' as keyof Project,
     label: '',
 }];
 export type ProjectsTableProps = {
@@ -91,7 +91,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({ projects }) => {
                                 </Td>)}
                                 <Td>
                                     <Stack direction="row" spacing={1} height={'100%'}>
-                                        <EditProjectPopup />
+                                        <EditProjectPopup projectId={project.id} />
                                         <IconButton aria-label={'envs'} icon={<SearchIcon />}
                                                     onClick={() => navigateToEnvs(project.id)} />
                                         <SubmitDeployPopup />
