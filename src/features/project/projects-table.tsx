@@ -90,11 +90,11 @@ const ProjectsTable: FC<ProjectsTableProps> = ({ projects }) => {
                                         : project[column.key as keyof Project]}
                                 </Td>)}
                                 <Td>
-                                    <Stack direction="row" spacing={1} height={'100%'}>
+                                    <Stack direction="row" spacing={0} height={'100%'}>
                                         <EditProjectPopup projectId={project.id} />
-                                        <IconButton aria-label={'envs'} icon={<SearchIcon />}
+                                        <IconButton background={'transparent'} aria-label={'envs'} icon={<SearchIcon />}
                                                     onClick={() => navigateToEnvs(project.id)} />
-                                        <SubmitDeployPopup />
+                                        <SubmitDeployPopup projectId={project.id}/>
                                     </Stack>
                                 </Td>
                             </Tr>)}

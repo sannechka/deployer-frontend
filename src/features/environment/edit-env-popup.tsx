@@ -18,7 +18,7 @@ const EditEnvPopup: FC<EnvFormProps> = ({ envId }) => {
 
     return (
         <>
-            <IconButton onClick={onOpen} icon={<EditIcon />} colorScheme="gray" aria-label="env" />
+            <IconButton background={'transparent'} onClick={onOpen} icon={<EditIcon />} colorScheme="gray" aria-label="env" />
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}

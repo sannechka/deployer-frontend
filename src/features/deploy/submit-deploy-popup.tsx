@@ -4,7 +4,7 @@ import {
     Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
     useDisclosure,
 } from '@chakra-ui/react';
-import { SettingsIcon } from '@chakra-ui/icons';
+import { ArrowRightIcon } from '@chakra-ui/icons';
 import DeployForm, { DeployFormProps, DeployFormRefModel } from './deploy-form';
 import { FC, useRef } from 'react';
 
@@ -16,7 +16,7 @@ const SubmitDeployPopup: FC<DeployFormProps> = ({ envId, projectId }) => {
 
     return (
         <>
-            <IconButton onClick={onOpen} icon={<SettingsIcon />} colorScheme="gray" aria-label="deploy" />
+            <IconButton background={'transparent'} onClick={onOpen} icon={<ArrowRightIcon/>} colorScheme="gray" aria-label="deploy" />
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}

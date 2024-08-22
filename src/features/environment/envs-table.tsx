@@ -7,6 +7,8 @@ import { Env } from '../../store/endpoints/be.endpoints';
 import SubmitDeployPopup from '../deploy/submit-deploy-popup';
 import EditEnvPopup from './edit-env-popup';
 import { FC, ReactNode } from 'react';
+import { useParams } from 'react-router-dom';
+import { EnvRouteParams } from '../../page/envs-page';
 
 type TableColumn = {
     key: string;
@@ -56,6 +58,7 @@ export type EnvsTableProps = {
 }
 const EnvsTable: FC<EnvsTableProps> = ({ envs }) => {
 
+    const { projectId } = useParams<EnvRouteParams>();
 
     return (
         <TableContainer whiteSpace="pre-line">
@@ -79,9 +82,9 @@ const EnvsTable: FC<EnvsTableProps> = ({ envs }) => {
                                         : env[column.key as keyof Env].toString()}
                                 </Td>)}
                                 <Td>
-                                    <Stack direction="row" spacing={1}>
+                                    <Stack direction="row" spacing={0}>
                                         <EditEnvPopup envId={env.id} />
-                                        <SubmitDeployPopup />
+                                        <SubmitDeployPopup  envId={env.id} projectId={projectId} />
                                     </Stack>
                                 </Td>
                             </Tr>)}

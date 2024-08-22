@@ -14,7 +14,7 @@ const EditEnvPopup: FC<ProjectFormProps> = ({ projectId }) => {
     const formRef = useRef<ProjectFormRefModel>(null);
     return (
         <>
-            <IconButton onClick={onOpen} colorScheme="gray" aria-label="edit-env" icon={<EditIcon />} />
+            <IconButton background={'transparent'} onClick={onOpen} colorScheme="gray" aria-label="edit-env" icon={<EditIcon />} />
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}

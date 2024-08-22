@@ -85,7 +85,8 @@ const DeployForm = forwardRef<DeployFormRefModel, DeployFormProps>(({ onClose, e
                 ]}
             >
                 <Select disabled={!!envId}>
-                    {envs.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
+                    {envs.filter(it => projectId ? it.projectId === projectId : true).map(it => <option key={it.id}
+                                                                                                        value={it.id}>{it.name}</option>)}
                 </Select>
             </Form.Item>
             <FormLabel fontWeight={600}>Namespace:</FormLabel>
@@ -99,7 +100,7 @@ const DeployForm = forwardRef<DeployFormRefModel, DeployFormProps>(({ onClose, e
                     },
                     {
                         whitespace: true,
-                        message: 'Namecpace can not be empty',
+                        message: 'Namespace can not be empty',
                     },
                 ]}
             >
