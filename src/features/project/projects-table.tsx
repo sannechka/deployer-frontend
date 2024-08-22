@@ -69,8 +69,8 @@ const ProjectsTable: FC<ProjectsTableProps> = ({ projects }) => {
     const navigateToEnvs = (id: string) => navigate(`${id}/envs`);
 
     return (
-        <TableContainer whiteSpace="pre-line">
-            <Table variant="simple" size={'sm'} borderColor={'gray'} border={1}>
+        <TableContainer whiteSpace="pre-line" height={'calc(100vh - 200px)'} overflowY={'auto'} >
+            <Table variant="simple" size={'sm'} borderColor={'gray'}  border={1}>
                 <Thead>
                     <Tr>
                         <>
